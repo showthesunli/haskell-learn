@@ -1,4 +1,10 @@
 data Op = Add | Sub | Mul | Div
+instance Show Op where
+    show Add = "+"
+    show Sub = "-"
+    show Mul = "*"
+    show Div = "/"
+
 
 apply :: Op -> Int -> Int -> Int
 apply Add x y = x + y
@@ -13,6 +19,12 @@ valid Mul _ _ = True
 valid Div x y = x `mod` y == 0
 
 data Expression = Val Int | App Op Expression Expression
+instance Show Expression where
+    show (Val n) = show n
+    show (App o l r) = brak l ++ show o ++ brak r
+        where
+            brak (Val n) = show n
+            brak e = "("++show e++")"
 
 eval :: Expression -> [Int]
 eval (Val n) = [n| n > 0]
@@ -49,6 +61,3 @@ solutions :: [Int] -> Int -> [Expression]
 solutions ns n = [e | vs <- choices ns, e <- exprs vs, eval e == [n]]
 
 type Result = (Expression, Int)
-
-results :: [Int] -> [Result]
-results ns = [(e, n)| e<- exprs ns, n <-eval e]
