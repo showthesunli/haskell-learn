@@ -35,7 +35,8 @@ takeP ps = foldr (:) (takeP ps) ps
 
 play :: [Player] -> Board -> IO ()
 play (p : ps) b = do
-  print (p ++ "'s turn, please input a number: ")
+  putStrLn ("board is: " ++ (show b))
+  putStr (p ++ "'s turn, please input a number: ")
   (win, nb) <- takeTurn p b
   if win
     then print (p ++ " win!")
